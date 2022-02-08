@@ -1,15 +1,16 @@
 package com.isladellago.billmanager.domain.model;
 
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-import java.util.Date;
+import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "bill")
-@Getter
-@Setter
-@ToString
+@Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
@@ -21,10 +22,10 @@ public final class Bill {
     private Integer billId;
 
     @Column(name = "start_date")
-    private Date startDate;
+    private LocalDateTime startDate;
 
     @Column(name = "end_date")
-    private Date endDate;
+    private LocalDateTime endDate;
 
     @Column(name = "residential_basic_cubic_meters")
     private Integer residentialBasicCubicMeters;
@@ -57,5 +58,5 @@ public final class Bill {
     private Integer cleaning;
 
     @Column(name = "creation_date")
-    private Date creationDate = new Date();
+    private final LocalDateTime creationDate = LocalDateTime.now();
 }

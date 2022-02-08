@@ -1,24 +1,24 @@
 package com.isladellago.billmanager.domain.dto;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Positive;
 import javax.validation.constraints.PositiveOrZero;
-import java.util.Date;
+import java.time.LocalDateTime;
 
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
+@Builder
+@ToString
 public final class CreateBillBodyDTO {
 
     @NotNull
-    private Date startDate;
+    private LocalDateTime startDate;
 
     @NotNull
-    private Date endDate;
+    private LocalDateTime endDate;
 
     @NotNull
     @Positive

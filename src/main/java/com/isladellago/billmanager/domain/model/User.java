@@ -20,6 +20,7 @@ import java.util.List;
 @Builder
 @ToString
 public final class User implements UserDetails {
+
     @Id
     @Column(name = "user_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)

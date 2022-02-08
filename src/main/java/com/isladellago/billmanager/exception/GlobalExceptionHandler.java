@@ -5,6 +5,7 @@ import com.isladellago.billmanager.domain.enums.ErrorCodeEnum;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
@@ -19,6 +20,22 @@ public class GlobalExceptionHandler {
                 ex.getStartDate(), ex.getEndDate(), ex.getUuid());
 
         return mapErrorResponse(ErrorCodeEnum.L300, HttpStatus.CONFLICT);
+    }
+
+    @ExceptionHandler(MethodArgumentNotValidException.class)
+    public final ResponseEntity<ErrorResponseDTO> handleInvalidArgument() {
+        log.info(ErrorCodeEnum.L002.getErrorMessage());
+
+        return mapErrorResponse(ErrorCodeEnum.L002, HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(BillExistsWithDateRangeException.class)
+    public final ResponseEntity<ErrorResponseDTO> handleBillExistsWithDateRange(
+            BillExistsWithDateRangeException ex) {
+        log.info("There is a bill with the start date: {} or end date: {}, uuid: {}",
+                ex.getStartDate(), ex.getEndDate(), ex.getUuid());
+
+        return mapErrorResponse(ErrorCodeEnum.L301, HttpStatus.CONFLICT);
     }
 
     /**
