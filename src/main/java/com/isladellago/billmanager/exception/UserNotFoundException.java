@@ -7,5 +7,5 @@ import lombok.Getter;
 @Getter
 public class UserNotFoundException extends RuntimeException {
 
-    private String email;
+    private final String email;
 }

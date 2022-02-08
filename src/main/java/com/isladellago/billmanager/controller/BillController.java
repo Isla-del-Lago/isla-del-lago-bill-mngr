@@ -17,7 +17,7 @@ import java.util.UUID;
 
 @RestController
 @RequestMapping(PathUtils.BASE_PATH)
-@CrossOrigin("*")
+@CrossOrigin("*") //NOSONAR
 @AllArgsConstructor
 @Log4j2
 public class BillController {
