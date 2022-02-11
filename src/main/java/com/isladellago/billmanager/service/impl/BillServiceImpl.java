@@ -1,9 +1,11 @@
 package com.isladellago.billmanager.service.impl;
 
 import com.isladellago.billmanager.domain.dto.CreateBillBodyDTO;
+import com.isladellago.billmanager.domain.dto.GetBillResponseDTO;
 import com.isladellago.billmanager.domain.model.Bill;
 import com.isladellago.billmanager.domain.model.BillRepository;
 import com.isladellago.billmanager.exception.BillExistsWithDateRangeException;
+import com.isladellago.billmanager.exception.BillNotFoundException;
 import com.isladellago.billmanager.exception.InvalidBillDateRangeException;
 import com.isladellago.billmanager.service.BillService;
 import lombok.AllArgsConstructor;
@@ -45,6 +47,34 @@ public class BillServiceImpl implements BillService {
         return billRepository
                 .save(mappedBill)
                 .getBillId();
+    }
+
+    @Override
+    public Bill getBillById(Integer billId, UUID uuid) {
+        log.info("[Get bill by id service] Bill id: {}, uuid: {}",
+                billId, uuid);
+
+        return billRepository.findById(billId)
+                .orElseThrow(() -> new BillNotFoundException(billId));
+    }
+
+    @Override
+    public GetBillResponseDTO mapGetBill(Bill bill) {
+        return GetBillResponseDTO.builder()
+                .billId(bill.getBillId())
+                .startDate(bill.getStartDate())
+                .endDate(bill.getEndDate())
+                .residentialBasicCubicMeters(bill.getResidentialBasicCubicMeters())
+                .residentialBasicSuperiorCubicMeters(bill.getResidentialBasicSuperiorCubicMeters())
+                .discounts(bill.getDiscounts())
+                .residentialFixedAqueduct(bill.getResidentialFixedAqueduct())
+                .residentialBasicAqueduct(bill.getResidentialBasicAqueduct())
+                .residentialBasicSuperiorAqueduct(bill.getResidentialBasicSuperiorAqueduct())
+                .residentialFixedSewerage(bill.getResidentialFixedSewerage())
+                .residentialBasicSewerage(bill.getResidentialBasicSewerage())
+                .residentialBasicSuperiorSewerage(bill.getResidentialBasicSuperiorSewerage())
+                .cleaning(bill.getCleaning())
+                .build();
     }
 
     /**

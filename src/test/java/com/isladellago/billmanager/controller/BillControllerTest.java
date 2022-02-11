@@ -3,6 +3,7 @@ package com.isladellago.billmanager.controller;
 import com.isladellago.billmanager.TestUtils;
 import com.isladellago.billmanager.domain.dto.CreateBillBodyDTO;
 import com.isladellago.billmanager.domain.dto.CreateBillResponseDTO;
+import com.isladellago.billmanager.domain.dto.GetBillResponseDTO;
 import com.isladellago.billmanager.service.BillService;
 import org.junit.Assert;
 import org.junit.Before;
@@ -45,5 +46,21 @@ public class BillControllerTest {
         Assert.assertEquals(HttpStatus.CREATED, response.getStatusCode());
         Assert.assertNotNull(response.getBody());
         Assert.assertEquals(TestUtils.BILL_ID_1, (Integer) response.getBody().getBillId());
+    }
+
+    @Test
+    public final void testGetBillById() {
+        Mockito.when(billService.getBillById(TestUtils.BILL_ID_1, TestUtils.AUTH_UUID))
+                .thenReturn(TestUtils.getBill_1());
+        Mockito.when(billService.mapGetBill(Mockito.any()))
+                .thenReturn(GetBillResponseDTO.builder().build());
+
+
+        final ResponseEntity<GetBillResponseDTO> response =
+                billController.getBillById(TestUtils.AUTH_UUID, TestUtils.AUTH_TOKEN, TestUtils.BILL_ID_1);
+
+        Assert.assertNotNull(response);
+        Assert.assertEquals(HttpStatus.OK, response.getStatusCode());
+        Assert.assertNotNull(response.getBody());
     }
 }
