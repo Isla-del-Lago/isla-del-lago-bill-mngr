@@ -1,5 +1,6 @@
 package com.isladellago.billmanager.domain.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.*;
 
@@ -22,4 +23,8 @@ public final class Apartment {
     @JsonManagedReference
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, mappedBy = "apartment")
     private List<User> users;
+
+    @JsonBackReference
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "apartment")
+    private List<Consumption> consumptions;
 }

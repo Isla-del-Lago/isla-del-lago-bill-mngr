@@ -41,7 +41,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .and();
 
         http.authorizeRequests()
-                .antMatchers(HttpMethod.GET, PathUtils.BASE_PATH + PathUtils.HEALTH_PATH).permitAll()
+                .antMatchers(HttpMethod.GET, PathUtils.BASE_PATH_BILL + PathUtils.HEALTH_PATH).permitAll()
                 .anyRequest().authenticated();
 
         http.addFilterBefore(

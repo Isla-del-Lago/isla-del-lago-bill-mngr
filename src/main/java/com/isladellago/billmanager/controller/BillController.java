@@ -19,7 +19,7 @@ import javax.validation.constraints.NotNull;
 import java.util.UUID;
 
 @RestController
-@RequestMapping(PathUtils.BASE_PATH)
+@RequestMapping(PathUtils.BASE_PATH_BILL)
 @CrossOrigin("*") //NOSONAR
 @AllArgsConstructor
 @Log4j2

@@ -7,7 +7,8 @@ import lombok.Getter;
 @AllArgsConstructor
 @Getter
 @Builder
-public final class BillNotFoundException extends RuntimeException {
+public class ConsumptionExistsWithBillIdAndApartmentId extends RuntimeException {
 
-    private final Integer billId;
+    private Integer billId;
+    private String apartmentId;
 }

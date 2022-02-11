@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping(PathUtils.BASE_PATH)
+@RequestMapping(PathUtils.BASE_PATH_BILL)
 @CrossOrigin("*") //NOSONAR
 public class HealthController {
 

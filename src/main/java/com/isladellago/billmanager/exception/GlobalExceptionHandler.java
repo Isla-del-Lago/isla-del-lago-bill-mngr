@@ -46,6 +46,31 @@ public class GlobalExceptionHandler {
         return mapErrorResponse(ErrorCodeEnum.L302, HttpStatus.NOT_FOUND);
     }
 
+    @ExceptionHandler(ApartmentNotFoundException.class)
+    public final ResponseEntity<ErrorResponseDTO> handleApartmentNotFoundException(
+            ApartmentNotFoundException ex) {
+        log.error("Apartment with id: {} not found", ex.getApartmentId());
+
+        return mapErrorResponse(ErrorCodeEnum.L200, HttpStatus.NOT_FOUND);
+    }
+
+    @ExceptionHandler(ConsumptionNotFoundException.class)
+    public final ResponseEntity<ErrorResponseDTO> handleConsumptionNotFoundException(
+            ConsumptionNotFoundException ex) {
+        log.error("Consumption with id: {} not found", ex.getConsumptionId());
+
+        return mapErrorResponse(ErrorCodeEnum.L400, HttpStatus.NOT_FOUND);
+    }
+
+    @ExceptionHandler(ConsumptionExistsWithBillIdAndApartmentId.class)
+    public final ResponseEntity<ErrorResponseDTO> handleConsumptionExistsWithBillIdAndApartmentId(
+            ConsumptionExistsWithBillIdAndApartmentId ex) {
+        log.error("The consumption with bill id: {} and apartment id: {} already exists",
+                ex.getBillId(), ex.getApartmentId());
+
+        return mapErrorResponse(ErrorCodeEnum.L401, HttpStatus.CONFLICT);
+    }
+
     /**
      * Maps the error response when handle an exception.
      *
