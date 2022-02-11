@@ -2,6 +2,8 @@ package com.isladellago.billmanager.controller;
 
 import com.isladellago.billmanager.domain.dto.CreateBillBodyDTO;
 import com.isladellago.billmanager.domain.dto.CreateBillResponseDTO;
+import com.isladellago.billmanager.domain.dto.GetBillResponseDTO;
+import com.isladellago.billmanager.domain.model.Bill;
 import com.isladellago.billmanager.service.BillService;
 import com.isladellago.billmanager.util.CustomHttpHeaders;
 import com.isladellago.billmanager.util.PathUtils;
@@ -13,6 +15,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.constraints.NotNull;
 import java.util.UUID;
 
 @RestController
@@ -41,5 +44,23 @@ public class BillController {
         return ResponseEntity
                 .status(HttpStatus.CREATED)
                 .body(response);
+    }
+
+    @GetMapping(PathUtils.GET_BILL_BY_ID)
+    public final ResponseEntity<GetBillResponseDTO> getBillById(
+            @RequestHeader(CustomHttpHeaders.UUID_HEADER) UUID uuid,
+            @RequestHeader(HttpHeaders.AUTHORIZATION) String authToken,
+            @NotNull @PathVariable("bill-id") Integer billId) {
+        log.info("[Get bill by id controller] Bill id: {}, uuid: {}, token: {}",
+                billId, uuid, authToken);
+
+        final Bill bill = billService.getBillById(billId, uuid);
+        final GetBillResponseDTO bilLResponse = billService.mapGetBill(bill);
+
+        log.info("[Get bill by id controller] Bill response: {}", bilLResponse);
+
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(bilLResponse);
     }
 }

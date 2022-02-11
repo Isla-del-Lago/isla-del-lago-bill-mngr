@@ -71,4 +71,26 @@ public class GlobalExceptionHandlerTest {
                 ErrorCodeEnum.L301.getErrorMessage(), response.getBody().getError()
         );
     }
+
+    @Test
+    public final void testHandleBillNotFound() {
+        final BillNotFoundException ex = BillNotFoundException.builder()
+                .billId(TestUtils.BILL_ID_1)
+                .build();
+
+        final ResponseEntity<ErrorResponseDTO> response =
+                globalExceptionHandler.handleBillNotFound(ex);
+
+        Assert.assertNotNull(response);
+        Assert.assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode());
+        Assert.assertNotNull(response.getBody());
+        Assert.assertEquals(
+                ErrorCodeEnum.L302.getErrorCode(),
+                response.getBody().getErrorCode()
+        );
+        Assert.assertEquals(
+                ErrorCodeEnum.L302.getErrorMessage(),
+                response.getBody().getError()
+        );
+    }
 }

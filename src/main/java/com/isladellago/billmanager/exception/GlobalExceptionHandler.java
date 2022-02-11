@@ -38,6 +38,14 @@ public class GlobalExceptionHandler {
         return mapErrorResponse(ErrorCodeEnum.L301, HttpStatus.CONFLICT);
     }
 
+    @ExceptionHandler(BillNotFoundException.class)
+    public final ResponseEntity<ErrorResponseDTO> handleBillNotFound(
+            BillNotFoundException ex) {
+        log.error("Bill with id: {} not found", ex.getBillId());
+
+        return mapErrorResponse(ErrorCodeEnum.L302, HttpStatus.NOT_FOUND);
+    }
+
     /**
      * Maps the error response when handle an exception.
      *

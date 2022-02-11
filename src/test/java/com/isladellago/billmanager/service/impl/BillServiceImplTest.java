@@ -1,8 +1,11 @@
 package com.isladellago.billmanager.service.impl;
 
 import com.isladellago.billmanager.TestUtils;
+import com.isladellago.billmanager.domain.dto.GetBillResponseDTO;
+import com.isladellago.billmanager.domain.model.Bill;
 import com.isladellago.billmanager.domain.model.BillRepository;
 import com.isladellago.billmanager.exception.BillExistsWithDateRangeException;
+import com.isladellago.billmanager.exception.BillNotFoundException;
 import com.isladellago.billmanager.exception.InvalidBillDateRangeException;
 import org.junit.Assert;
 import org.junit.Before;
@@ -11,6 +14,8 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
+
+import java.util.Optional;
 
 public class BillServiceImplTest {
 
@@ -60,5 +65,38 @@ public class BillServiceImplTest {
                 .thenReturn(true);
 
         billService.createBill(TestUtils.AUTH_UUID, TestUtils.getCreateBillPayload_1());
+    }
+
+    @Test
+    public final void testGetBillById() {
+        final Bill mockBill = TestUtils.getBill_1();
+
+        Mockito.when(billRepository.findById(TestUtils.BILL_ID_1))
+                .thenReturn(Optional.of(mockBill));
+
+        final Bill bill =
+                billService.getBillById(TestUtils.BILL_ID_1, TestUtils.AUTH_UUID);
+
+        Assert.assertNotNull(bill);
+        Assert.assertEquals(mockBill, bill);
+    }
+
+    @Test(expected = BillNotFoundException.class)
+    public final void testBillNotFoundById() {
+        Mockito.when(billRepository.findById(TestUtils.BILL_ID_1))
+                .thenReturn(Optional.empty());
+
+        billService.getBillById(TestUtils.BILL_ID_1, TestUtils.AUTH_UUID);
+    }
+
+    @Test
+    public final void testMapGetBillResponse() {
+        final Bill mockBill = TestUtils.getBill_1();
+
+        final GetBillResponseDTO response =
+                billService.mapGetBill(mockBill);
+
+        Assert.assertNotNull(response);
+        Assert.assertEquals(mockBill.getBillId(), response.getBillId());
     }
 }
