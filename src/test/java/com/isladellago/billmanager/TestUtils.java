@@ -1,7 +1,9 @@
 package com.isladellago.billmanager;
 
 import com.isladellago.billmanager.domain.dto.CreateBillBodyDTO;
+import com.isladellago.billmanager.domain.dto.CreateConsumptionBodyDTO;
 import com.isladellago.billmanager.domain.model.Bill;
+import com.isladellago.billmanager.domain.model.Consumption;
 
 import java.time.LocalDateTime;
 import java.util.UUID;
@@ -30,6 +32,9 @@ public final class TestUtils {
     private static final Integer CLEANING = 31223;
 
     public static final String USER_EMAIL = "user-admin@isladellago.com";
+    public static final String APARTMENT_ID_201 = "Apartamento 201";
+
+    public static final Integer CONSUMPTION_ID_1 = 1;
 
     public static Bill getBill_1() {
         return Bill.builder()
@@ -97,6 +102,22 @@ public final class TestUtils {
                 .residentialBasicSewerage(RESIDENTIAL_BASIC_SEWERAGE)
                 .residentialBasicSuperiorSewerage(RESIDENTIAL_BASIC_SUPERIOR_SEWERAGE)
                 .cleaning(CLEANING)
+                .build();
+    }
+
+    public static CreateConsumptionBodyDTO getCreateConsumptionBodyDto_1() {
+        return CreateConsumptionBodyDTO.builder()
+                .apartmentId(APARTMENT_ID_201)
+                .billId(BILL_ID_1)
+                .value(10000)
+                .residentialBasicCubicMeters(12.1d)
+                .residentialBasicSuperiorCubicMeters(23.1d)
+                .build();
+    }
+
+    public static Consumption getConsumption_1() {
+        return Consumption.builder()
+                .consumptionId(CONSUMPTION_ID_1)
                 .build();
     }
 }

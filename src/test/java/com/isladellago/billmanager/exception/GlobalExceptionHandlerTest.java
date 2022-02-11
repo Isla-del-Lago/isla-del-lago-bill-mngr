@@ -23,15 +23,7 @@ public class GlobalExceptionHandlerTest {
         final ResponseEntity<ErrorResponseDTO> response =
                 globalExceptionHandler.handleInvalidBillDateRange(ex);
 
-        Assert.assertNotNull(response);
-        Assert.assertEquals(HttpStatus.CONFLICT, response.getStatusCode());
-        Assert.assertNotNull(response.getBody());
-        Assert.assertEquals(
-                ErrorCodeEnum.L300.getErrorCode(), response.getBody().getErrorCode()
-        );
-        Assert.assertEquals(
-                ErrorCodeEnum.L300.getErrorMessage(), response.getBody().getError()
-        );
+        testResponse(response, HttpStatus.CONFLICT, ErrorCodeEnum.L300);
     }
 
     @Test
@@ -39,15 +31,7 @@ public class GlobalExceptionHandlerTest {
         final ResponseEntity<ErrorResponseDTO> response =
                 globalExceptionHandler.handleInvalidArgument();
 
-        Assert.assertNotNull(response);
-        Assert.assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
-        Assert.assertNotNull(response.getBody());
-        Assert.assertEquals(
-                ErrorCodeEnum.L002.getErrorCode(), response.getBody().getErrorCode()
-        );
-        Assert.assertEquals(
-                ErrorCodeEnum.L002.getErrorMessage(), response.getBody().getError()
-        );
+        testResponse(response, HttpStatus.BAD_REQUEST, ErrorCodeEnum.L002);
     }
 
     @Test
@@ -61,15 +45,7 @@ public class GlobalExceptionHandlerTest {
         final ResponseEntity<ErrorResponseDTO> response =
                 globalExceptionHandler.handleBillExistsWithDateRange(ex);
 
-        Assert.assertNotNull(response);
-        Assert.assertEquals(HttpStatus.CONFLICT, response.getStatusCode());
-        Assert.assertNotNull(response.getBody());
-        Assert.assertEquals(
-                ErrorCodeEnum.L301.getErrorCode(), response.getBody().getErrorCode()
-        );
-        Assert.assertEquals(
-                ErrorCodeEnum.L301.getErrorMessage(), response.getBody().getError()
-        );
+        testResponse(response, HttpStatus.CONFLICT, ErrorCodeEnum.L301);
     }
 
     @Test
@@ -81,15 +57,57 @@ public class GlobalExceptionHandlerTest {
         final ResponseEntity<ErrorResponseDTO> response =
                 globalExceptionHandler.handleBillNotFound(ex);
 
+        testResponse(response, HttpStatus.NOT_FOUND, ErrorCodeEnum.L302);
+    }
+
+    @Test
+    public final void testHandleApartmentNotFoundException() {
+        final ApartmentNotFoundException ex = ApartmentNotFoundException.builder()
+                .apartmentId(TestUtils.APARTMENT_ID_201)
+                .build();
+
+        final ResponseEntity<ErrorResponseDTO> response =
+                globalExceptionHandler.handleApartmentNotFoundException(ex);
+
+        testResponse(response, HttpStatus.NOT_FOUND, ErrorCodeEnum.L200);
+    }
+
+    @Test
+    public final void testHandleConsumptionNotFoundException() {
+        final ConsumptionNotFoundException ex = ConsumptionNotFoundException.builder()
+                .consumptionId(TestUtils.CONSUMPTION_ID_1)
+                .build();
+
+        final ResponseEntity<ErrorResponseDTO> response =
+                globalExceptionHandler.handleConsumptionNotFoundException(ex);
+
+        testResponse(response, HttpStatus.NOT_FOUND, ErrorCodeEnum.L400);
+    }
+
+    @Test
+    public final void testConsumptionExistsWithBillIdAndApartmentId() {
+        final ConsumptionExistsWithBillIdAndApartmentId ex = ConsumptionExistsWithBillIdAndApartmentId.builder()
+                .apartmentId(TestUtils.APARTMENT_ID_201)
+                .billId(TestUtils.BILL_ID_1)
+                .build();
+
+        final ResponseEntity<ErrorResponseDTO> response =
+                globalExceptionHandler.handleConsumptionExistsWithBillIdAndApartmentId(ex);
+
+        testResponse(response, HttpStatus.CONFLICT, ErrorCodeEnum.L401);
+    }
+
+    private void testResponse(ResponseEntity<ErrorResponseDTO> response,
+                              HttpStatus httpStatus, ErrorCodeEnum errorCodeEnum) {
         Assert.assertNotNull(response);
-        Assert.assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode());
+        Assert.assertEquals(httpStatus, response.getStatusCode());
         Assert.assertNotNull(response.getBody());
         Assert.assertEquals(
-                ErrorCodeEnum.L302.getErrorCode(),
+                errorCodeEnum.getErrorCode(),
                 response.getBody().getErrorCode()
         );
         Assert.assertEquals(
-                ErrorCodeEnum.L302.getErrorMessage(),
+                errorCodeEnum.getErrorMessage(),
                 response.getBody().getError()
         );
     }

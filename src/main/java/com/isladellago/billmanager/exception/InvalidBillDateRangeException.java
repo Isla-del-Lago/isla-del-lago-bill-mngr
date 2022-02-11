@@ -10,7 +10,7 @@ import java.util.UUID;
 @AllArgsConstructor
 @Getter
 @Builder
-public class InvalidBillDateRangeException extends RuntimeException {
+public final class InvalidBillDateRangeException extends RuntimeException {
 
     private final LocalDateTime startDate;
     private final LocalDateTime endDate;
