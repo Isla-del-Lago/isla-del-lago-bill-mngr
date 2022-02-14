@@ -1,13 +1,12 @@
 package com.isladellago.billmanager.service.impl;
 
 import com.isladellago.billmanager.TestUtils;
-import com.isladellago.billmanager.domain.model.Apartment;
-import com.isladellago.billmanager.domain.model.ApartmentRepository;
-import com.isladellago.billmanager.domain.model.BillRepository;
-import com.isladellago.billmanager.domain.model.ConsumptionRepository;
+import com.isladellago.billmanager.domain.dto.GetConsumptionResponseDTO;
+import com.isladellago.billmanager.domain.model.*;
 import com.isladellago.billmanager.exception.ApartmentNotFoundException;
 import com.isladellago.billmanager.exception.BillNotFoundException;
 import com.isladellago.billmanager.exception.ConsumptionExistsWithBillIdAndApartmentId;
+import com.isladellago.billmanager.exception.ConsumptionNotFoundException;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -103,5 +102,48 @@ public class ConsumptionServiceImplTest {
 
         consumptionService
                 .createConsumption(TestUtils.getCreateConsumptionBodyDto_1(), TestUtils.AUTH_UUID);
+    }
+
+    @Test
+    public final void testGetConsumptionById() {
+        final Consumption mockConsumption = TestUtils.getConsumption_1();
+
+        Mockito.when(consumptionRepository.findById(TestUtils.BILL_ID_1))
+                .thenReturn(Optional.of(mockConsumption));
+
+        final Consumption consumption =
+                consumptionService.getConsumptionById(TestUtils.CONSUMPTION_ID_1, TestUtils.AUTH_UUID);
+
+        Assert.assertNotNull(consumption);
+        Assert.assertEquals(mockConsumption, consumption);
+    }
+
+    @Test(expected = ConsumptionNotFoundException.class)
+    public final void testGetConsumptionByIdDoesNotExists() {
+        Mockito.when(consumptionRepository.findById(TestUtils.CONSUMPTION_ID_1))
+                .thenReturn(Optional.empty());
+
+        consumptionService
+                .getConsumptionById(TestUtils.CONSUMPTION_ID_1, TestUtils.AUTH_UUID);
+    }
+
+    @Test
+    public final void testMapGetConsumption() {
+        final Consumption mockConsumption = TestUtils.getConsumption_1();
+        final GetConsumptionResponseDTO response = consumptionService.mapGetConsumption(mockConsumption);
+
+        Assert.assertNotNull(response);
+        Assert.assertEquals(mockConsumption.getConsumptionId(), response.getConsumptionId());
+        Assert.assertEquals(mockConsumption.getApartment().getApartmentId(), response.getApartmentId());
+        Assert.assertEquals(mockConsumption.getBill().getBillId(), response.getBillId());
+        Assert.assertEquals(
+                mockConsumption.getResidentialBasicCubicMeters(),
+                response.getResidentialBasicCubicMeters()
+        );
+        Assert.assertEquals(
+                mockConsumption.getResidentialBasicSuperiorCubicMeters(),
+                response.getResidentialBasicSuperiorCubicMeters()
+        );
+        Assert.assertEquals(mockConsumption.getValue(), response.getValue());
     }
 }
