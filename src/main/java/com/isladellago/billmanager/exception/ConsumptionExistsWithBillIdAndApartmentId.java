@@ -7,7 +7,7 @@ import lombok.Getter;
 @AllArgsConstructor
 @Getter
 @Builder
-public class ConsumptionExistsWithBillIdAndApartmentId extends RuntimeException {
+public final class ConsumptionExistsWithBillIdAndApartmentId extends RuntimeException {
 
     private Integer billId;
     private String apartmentId;

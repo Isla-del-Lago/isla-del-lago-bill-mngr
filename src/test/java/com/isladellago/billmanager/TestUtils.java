@@ -2,6 +2,7 @@ package com.isladellago.billmanager;
 
 import com.isladellago.billmanager.domain.dto.CreateBillBodyDTO;
 import com.isladellago.billmanager.domain.dto.CreateConsumptionBodyDTO;
+import com.isladellago.billmanager.domain.model.Apartment;
 import com.isladellago.billmanager.domain.model.Bill;
 import com.isladellago.billmanager.domain.model.Consumption;
 
@@ -118,6 +119,12 @@ public final class TestUtils {
     public static Consumption getConsumption_1() {
         return Consumption.builder()
                 .consumptionId(CONSUMPTION_ID_1)
-                .build();
+                .apartment(Apartment.builder()
+                        .apartmentId(APARTMENT_ID_201)
+                        .build()
+                ).bill(Bill.builder()
+                        .billId(BILL_ID_1)
+                        .build()
+                ).build();
     }
 }
