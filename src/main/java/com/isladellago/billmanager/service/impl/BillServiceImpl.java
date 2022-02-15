@@ -13,6 +13,8 @@ import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 @Service
@@ -75,6 +77,28 @@ public class BillServiceImpl implements BillService {
                 .residentialBasicSuperiorSewerage(bill.getResidentialBasicSuperiorSewerage())
                 .cleaning(bill.getCleaning())
                 .build();
+    }
+
+    @Override
+    public boolean existsById(Integer billId) {
+        log.info("[Bill exists by id service] Bill id: {}", billId);
+        return billRepository.existsById(billId);
+    }
+
+    @Override
+    public Optional<Bill> getPreviousBill(Bill bill) {
+        log.info("[Get previous bill service] Current bill: {}", bill);
+
+        final List<Bill> previousBills =
+                billRepository.findByStartDateBeforeOrderByStartDateDesc(bill.getStartDate());
+
+        log.info("[Get previous bills] Previous bills: {}", previousBills);
+
+        if (previousBills.size() == 0) {
+            return Optional.empty();
+        }
+
+        return Optional.of(previousBills.get(0));
     }
 
     /**

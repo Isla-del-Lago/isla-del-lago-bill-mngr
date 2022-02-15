@@ -1,7 +1,6 @@
 package com.isladellago.billmanager.service;
 
-import com.isladellago.billmanager.domain.dto.CreateConsumptionBodyDTO;
-import com.isladellago.billmanager.domain.dto.GetConsumptionResponseDTO;
+import com.isladellago.billmanager.domain.dto.*;
 import com.isladellago.billmanager.domain.model.Consumption;
 
 import java.util.UUID;
@@ -34,4 +33,26 @@ public interface ConsumptionService {
      * @return Response mapped.
      */
     GetConsumptionResponseDTO mapGetConsumption(Consumption consumption);
+
+    /**
+     * Calculates the percentage of every consumption and
+     * saves the consumption on database.
+     *
+     * @param consumptionsInfo List of consumptions.
+     * @param uuid             Execution uuid.
+     * @return Consumptions created.
+     */
+    CalculateConsumptionsPercentageResponse calculateConsumptionsPercentage(
+            CalculateConsumptionsPercentageBody consumptionsInfo, UUID uuid);
+
+    /**
+     * Calculates the values for the given apartment from the given
+     * bill.
+     *
+     * @param apartmentId Apartment to calculate the details.
+     * @param billId      Bill to calculate the details.
+     * @param uuid        Execution uuid.
+     * @return Details mapped.
+     */
+    ConsumptionDetail getConsumptionDetailByApartmentIdAndBillId(String apartmentId, Integer billId, UUID uuid);
 }

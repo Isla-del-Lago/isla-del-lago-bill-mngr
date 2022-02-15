@@ -1,8 +1,6 @@
 package com.isladellago.billmanager.controller;
 
-import com.isladellago.billmanager.domain.dto.CreateConsumptionBodyDTO;
-import com.isladellago.billmanager.domain.dto.CreateConsumptionResponseDTO;
-import com.isladellago.billmanager.domain.dto.GetConsumptionResponseDTO;
+import com.isladellago.billmanager.domain.dto.*;
 import com.isladellago.billmanager.domain.model.Consumption;
 import com.isladellago.billmanager.service.ConsumptionService;
 import com.isladellago.billmanager.util.CustomHttpHeaders;
@@ -12,6 +10,7 @@ import lombok.extern.log4j.Log4j2;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.constraints.NotNull;
@@ -63,5 +62,38 @@ public class ConsumptionController {
         return ResponseEntity
                 .status(HttpStatus.OK)
                 .body(response);
+    }
+
+    @PostMapping(PathUtils.CALCULATE_CONSUMPTIONS_PERCENTAGE)
+    public final ResponseEntity<CalculateConsumptionsPercentageResponse> calculateConsumptionsPercentage(
+            @RequestHeader(CustomHttpHeaders.UUID_HEADER) UUID uuid,
+            @RequestHeader(HttpHeaders.AUTHORIZATION) String authToken,
+            @Validated @RequestBody CalculateConsumptionsPercentageBody body) {
+        log.info("[Calculate consumptions percentage controller] Body: {}, uuid: {}, token: {}",
+                body, uuid, authToken);
+
+        final CalculateConsumptionsPercentageResponse responseBody =
+                consumptionService.calculateConsumptionsPercentage(body, uuid);
+
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(responseBody);
+    }
+
+    @GetMapping(PathUtils.GET_CONSUMPTION_DETAILS_BY_APARTMENT_AND_BILL)
+    public final ResponseEntity<ConsumptionDetail> getConsumptionDetailByApartmentAndBill(
+            @RequestHeader(CustomHttpHeaders.UUID_HEADER) UUID uuid,
+            @RequestHeader(HttpHeaders.AUTHORIZATION) String authToken,
+            @PathVariable("apartment-id") String apartmentId,
+            @PathVariable("bill-id") Integer billId) {
+        log.info("[Get consumption detail by apartment and bill controller] " +
+                "Apartment id: {}, bill id: {}, uuid: {}, authToken: {}", apartmentId, billId, uuid, authToken);
+
+        final ConsumptionDetail consumptionDetail =
+                consumptionService.getConsumptionDetailByApartmentIdAndBillId(apartmentId, billId, uuid);
+
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(consumptionDetail);
     }
 }

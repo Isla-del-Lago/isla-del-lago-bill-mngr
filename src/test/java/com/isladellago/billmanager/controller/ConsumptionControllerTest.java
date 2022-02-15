@@ -1,9 +1,7 @@
 package com.isladellago.billmanager.controller;
 
 import com.isladellago.billmanager.TestUtils;
-import com.isladellago.billmanager.domain.dto.CreateConsumptionBodyDTO;
-import com.isladellago.billmanager.domain.dto.CreateConsumptionResponseDTO;
-import com.isladellago.billmanager.domain.dto.GetConsumptionResponseDTO;
+import com.isladellago.billmanager.domain.dto.*;
 import com.isladellago.billmanager.domain.model.Consumption;
 import com.isladellago.billmanager.service.ConsumptionService;
 import org.junit.Assert;
@@ -70,5 +68,22 @@ public class ConsumptionControllerTest {
         Assert.assertNotNull(response);
         Assert.assertEquals(HttpStatus.OK, response.getStatusCode());
         Assert.assertNotNull(response.getBody());
+    }
+
+    @Test
+    public final void testCalculateConsumptionsPercentage() {
+        final CalculateConsumptionsPercentageBody body =
+                TestUtils.getCalculateConsumptionsPercentageBody_1();
+
+        Mockito.when(consumptionService.calculateConsumptionsPercentage(body, TestUtils.AUTH_UUID))
+                .thenReturn(TestUtils.getCalculateConsumptionsPerecentageResponse());
+
+        final ResponseEntity<CalculateConsumptionsPercentageResponse> response = consumptionController
+                .calculateConsumptionsPercentage(TestUtils.AUTH_UUID, TestUtils.AUTH_TOKEN, body);
+
+        Assert.assertNotNull(response);
+        Assert.assertEquals(HttpStatus.OK, response.getStatusCode());
+        Assert.assertNotNull(response.getBody());
+        Assert.assertEquals(2, response.getBody().getConsumptionIds().size());
     }
 }

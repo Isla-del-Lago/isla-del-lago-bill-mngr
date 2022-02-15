@@ -12,7 +12,7 @@ import lombok.Setter;
 public final class GetConsumptionResponseDTO {
 
     private Integer consumptionId;
-    private Integer value;
+    private Double value;
     private Double residentialBasicCubicMeters;
     private Double residentialBasicSuperiorCubicMeters;
     private String apartmentId;
