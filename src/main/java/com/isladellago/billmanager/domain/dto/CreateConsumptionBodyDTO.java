@@ -11,7 +11,7 @@ public final class CreateConsumptionBodyDTO {
 
     private final String apartmentId;
     private final Integer billId;
-    private final Integer value;
+    private final Double value;
     private Double residentialBasicCubicMeters;
     private Double residentialBasicSuperiorCubicMeters;
 }

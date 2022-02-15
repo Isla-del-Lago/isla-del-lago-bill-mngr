@@ -1,10 +1,8 @@
 package com.isladellago.billmanager.domain.model;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import lombok.*;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -16,6 +14,7 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
+@ToString
 public final class Bill {
 
     @Id
@@ -62,6 +61,7 @@ public final class Bill {
     @Column(name = "creation_date")
     private final LocalDateTime creationDate = LocalDateTime.now();
 
+    @ToString.Exclude
     @JsonBackReference
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "bill")
     private List<Consumption> consumptions;

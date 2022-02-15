@@ -4,6 +4,7 @@ import com.isladellago.billmanager.domain.dto.CreateBillBodyDTO;
 import com.isladellago.billmanager.domain.dto.GetBillResponseDTO;
 import com.isladellago.billmanager.domain.model.Bill;
 
+import java.util.Optional;
 import java.util.UUID;
 
 public interface BillService {
@@ -33,4 +34,20 @@ public interface BillService {
      * @return Get bill response mapped.
      */
     GetBillResponseDTO mapGetBill(Bill bill);
+
+    /**
+     * Validates if a bill exists by the given id.
+     *
+     * @param billId Bill id to validate.
+     * @return If bill exists or not.
+     */
+    boolean existsById(Integer billId);
+
+    /**
+     * Get the previous bill from the given bill.
+     *
+     * @param bill Bill object.
+     * @return Previous bill if exists.
+     */
+    Optional<Bill> getPreviousBill(Bill bill);
 }

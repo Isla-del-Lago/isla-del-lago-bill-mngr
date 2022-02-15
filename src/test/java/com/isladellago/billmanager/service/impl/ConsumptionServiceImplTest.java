@@ -1,12 +1,17 @@
 package com.isladellago.billmanager.service.impl;
 
 import com.isladellago.billmanager.TestUtils;
+import com.isladellago.billmanager.domain.dto.CalculateConsumptionsPercentageResponse;
 import com.isladellago.billmanager.domain.dto.GetConsumptionResponseDTO;
-import com.isladellago.billmanager.domain.model.*;
+import com.isladellago.billmanager.domain.model.Apartment;
+import com.isladellago.billmanager.domain.model.Consumption;
+import com.isladellago.billmanager.domain.model.ConsumptionRepository;
 import com.isladellago.billmanager.exception.ApartmentNotFoundException;
 import com.isladellago.billmanager.exception.BillNotFoundException;
 import com.isladellago.billmanager.exception.ConsumptionExistsWithBillIdAndApartmentId;
 import com.isladellago.billmanager.exception.ConsumptionNotFoundException;
+import com.isladellago.billmanager.service.ApartmentService;
+import com.isladellago.billmanager.service.BillService;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -23,10 +28,10 @@ public class ConsumptionServiceImplTest {
     private ConsumptionRepository consumptionRepository;
 
     @Mock
-    private BillRepository billRepository;
+    private BillService billService;
 
     @Mock
-    private ApartmentRepository apartmentRepository;
+    private ApartmentService apartmentService;
 
     @InjectMocks
     private ConsumptionServiceImpl consumptionService;
@@ -43,11 +48,11 @@ public class ConsumptionServiceImplTest {
                         TestUtils.BILL_ID_1, TestUtils.APARTMENT_ID_201
                 )).thenReturn(false);
 
-        Mockito.when(apartmentRepository.findById(TestUtils.APARTMENT_ID_201))
-                .thenReturn(Optional.of(Apartment.builder().build()));
+        Mockito.when(apartmentService.getApartmentById(TestUtils.APARTMENT_ID_201, TestUtils.AUTH_UUID))
+                .thenReturn(Apartment.builder().build());
 
-        Mockito.when(billRepository.findById(TestUtils.BILL_ID_1))
-                .thenReturn(Optional.of(TestUtils.getBill_1()));
+        Mockito.when(billService.getBillById(TestUtils.BILL_ID_1, TestUtils.AUTH_UUID))
+                .thenReturn(TestUtils.getBill_1());
 
         Mockito.when(consumptionRepository.save(Mockito.any()))
                 .thenReturn(TestUtils.getConsumption_1());
@@ -80,8 +85,8 @@ public class ConsumptionServiceImplTest {
                         TestUtils.BILL_ID_1, TestUtils.APARTMENT_ID_201
                 )).thenReturn(false);
 
-        Mockito.when(apartmentRepository.findById(TestUtils.APARTMENT_ID_201))
-                .thenReturn(Optional.empty());
+        Mockito.when(apartmentService.getApartmentById(TestUtils.APARTMENT_ID_201, TestUtils.AUTH_UUID))
+                .thenThrow(new ApartmentNotFoundException(TestUtils.APARTMENT_ID_201));
 
         consumptionService
                 .createConsumption(TestUtils.getCreateConsumptionBodyDto_1(), TestUtils.AUTH_UUID);
@@ -94,11 +99,11 @@ public class ConsumptionServiceImplTest {
                         TestUtils.BILL_ID_1, TestUtils.APARTMENT_ID_201
                 )).thenReturn(false);
 
-        Mockito.when(apartmentRepository.findById(TestUtils.APARTMENT_ID_201))
-                .thenReturn(Optional.of(Apartment.builder().build()));
+        Mockito.when(apartmentService.getApartmentById(TestUtils.APARTMENT_ID_201, TestUtils.AUTH_UUID))
+                .thenReturn(Apartment.builder().build());
 
-        Mockito.when(billRepository.findById(TestUtils.BILL_ID_1))
-                .thenReturn(Optional.empty());
+        Mockito.when(billService.getBillById(TestUtils.BILL_ID_1, TestUtils.AUTH_UUID))
+                .thenThrow(new BillNotFoundException(TestUtils.BILL_ID_1));
 
         consumptionService
                 .createConsumption(TestUtils.getCreateConsumptionBodyDto_1(), TestUtils.AUTH_UUID);
@@ -145,5 +150,25 @@ public class ConsumptionServiceImplTest {
                 response.getResidentialBasicSuperiorCubicMeters()
         );
         Assert.assertEquals(mockConsumption.getValue(), response.getValue());
+    }
+
+    @Test
+    public final void testCalculateConsumptionsPercentage() {
+        Mockito.when(billService.getBillById(TestUtils.BILL_ID_1, TestUtils.AUTH_UUID))
+                .thenReturn(TestUtils.getBill_1());
+
+        Mockito.when(apartmentService.getApartmentById(Mockito.any(), Mockito.any()))
+                .thenReturn(Apartment.builder().build());
+
+        Mockito.when(consumptionRepository.save(Mockito.any()))
+                .thenReturn(TestUtils.getConsumption_1());
+
+        final CalculateConsumptionsPercentageResponse response = consumptionService
+                .calculateConsumptionsPercentage(
+                        TestUtils.getCalculateConsumptionsPercentageBody_1(),
+                        TestUtils.AUTH_UUID
+                );
+
+        Assert.assertNotNull(response);
     }
 }

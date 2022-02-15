@@ -20,18 +20,20 @@ public final class Consumption {
     @Column(name = "consumption_id")
     private Integer consumptionId;
 
+    @ToString.Exclude
     @JsonManagedReference
     @ManyToOne
     @JoinColumn(name = "apartment_id", nullable = false)
     private Apartment apartment;
 
+    @ToString.Exclude
     @JsonManagedReference
     @ManyToOne
     @JoinColumn(name = "bill_id", nullable = false)
     private Bill bill;
 
     @Column
-    private Integer value;
+    private Double value;
 
     @Column(name = "residential_basic_cubic_meters")
     private Double residentialBasicCubicMeters;
