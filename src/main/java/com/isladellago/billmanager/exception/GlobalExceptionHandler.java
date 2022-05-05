@@ -71,6 +71,14 @@ public class GlobalExceptionHandler {
         return mapErrorResponse(ErrorCodeEnum.L401, HttpStatus.CONFLICT);
     }
 
+    @ExceptionHandler(ConsumptionsAlreadyCalculatedException.class)
+    public final ResponseEntity<ErrorResponseDTO> handleConsumptionsAlreadyCalculated(
+            ConsumptionsAlreadyCalculatedException ex) {
+        log.error("Consumptions for the bill with id: {} are already calculated", ex.getBillId());
+
+        return mapErrorResponse(ErrorCodeEnum.L402, HttpStatus.CONFLICT);
+    }
+
     /**
      * Maps the error response when handle an exception.
      *
