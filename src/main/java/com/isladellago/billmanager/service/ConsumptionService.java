@@ -3,6 +3,7 @@ package com.isladellago.billmanager.service;
 import com.isladellago.billmanager.domain.dto.*;
 import com.isladellago.billmanager.domain.model.Consumption;
 
+import java.util.List;
 import java.util.UUID;
 
 public interface ConsumptionService {
@@ -55,4 +56,13 @@ public interface ConsumptionService {
      * @return Details mapped.
      */
     ConsumptionDetail getConsumptionDetailByApartmentIdAndBillId(String apartmentId, Integer billId, UUID uuid);
+
+    /**
+     * Get all consumptions created with a given bill id
+     *
+     * @param billId Bill id to llok for consumptions.
+     * @param uuid   Execution uuid.
+     * @return List with the consumptions.
+     */
+    List<Consumption> getConsumptionsByBillId(Integer billId, UUID uuid);
 }

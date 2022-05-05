@@ -97,6 +97,18 @@ public class GlobalExceptionHandlerTest {
         testResponse(response, HttpStatus.CONFLICT, ErrorCodeEnum.L401);
     }
 
+    @Test
+    public final void testConsumptionsAlreadyCalculated() {
+        final ConsumptionsAlreadyCalculatedException ex = ConsumptionsAlreadyCalculatedException.builder()
+                .billId(TestUtils.BILL_ID_1)
+                .build();
+
+        final ResponseEntity<ErrorResponseDTO> response =
+                globalExceptionHandler.handleConsumptionsAlreadyCalculated(ex);
+
+        testResponse(response, HttpStatus.CONFLICT, ErrorCodeEnum.L402);
+    }
+
     private void testResponse(ResponseEntity<ErrorResponseDTO> response,
                               HttpStatus httpStatus, ErrorCodeEnum errorCodeEnum) {
         Assert.assertNotNull(response);

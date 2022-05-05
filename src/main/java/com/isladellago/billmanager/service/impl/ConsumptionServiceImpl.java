@@ -8,6 +8,7 @@ import com.isladellago.billmanager.domain.model.ConsumptionRepository;
 import com.isladellago.billmanager.exception.ConsumptionExistsWithBillIdAndApartmentId;
 import com.isladellago.billmanager.exception.ConsumptionNotFoundByBillIdAndApartmentId;
 import com.isladellago.billmanager.exception.ConsumptionNotFoundException;
+import com.isladellago.billmanager.exception.ConsumptionsAlreadyCalculatedException;
 import com.isladellago.billmanager.service.ApartmentService;
 import com.isladellago.billmanager.service.BillService;
 import com.isladellago.billmanager.service.ConsumptionService;
@@ -75,6 +76,10 @@ public class ConsumptionServiceImpl implements ConsumptionService {
         log.info("[Calculate consumptions percentage service] Consumptions info: {}, uuid: {}",
                 consumptionsInfo, uuid);
 
+        if (getConsumptionsByBillId(consumptionsInfo.getBillId(), uuid).size() == 10) {
+            throw new ConsumptionsAlreadyCalculatedException(consumptionsInfo.getBillId());
+        }
+
         final Bill bill = billService.getBillById(consumptionsInfo.getBillId(), uuid);
         final Map<String, Double> calculatedConsumptionValues = calculateConsumptionValues(consumptionsInfo, bill);
 
@@ -120,6 +125,14 @@ public class ConsumptionServiceImpl implements ConsumptionService {
                 )
                 .cleaning((double) bill.getCleaning() / 10)
                 .build();
+    }
+
+    @Override
+    public List<Consumption> getConsumptionsByBillId(Integer billId, UUID uuid) {
+        log.info("[Get consumptions by bill id service] Bill id: {}, uuid: {}",
+                billId, uuid);
+
+        return consumptionRepository.findByBillBillId(billId);
     }
 
     /**

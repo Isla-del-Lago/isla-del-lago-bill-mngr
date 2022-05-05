@@ -6,10 +6,7 @@ import com.isladellago.billmanager.domain.dto.GetConsumptionResponseDTO;
 import com.isladellago.billmanager.domain.model.Apartment;
 import com.isladellago.billmanager.domain.model.Consumption;
 import com.isladellago.billmanager.domain.model.ConsumptionRepository;
-import com.isladellago.billmanager.exception.ApartmentNotFoundException;
-import com.isladellago.billmanager.exception.BillNotFoundException;
-import com.isladellago.billmanager.exception.ConsumptionExistsWithBillIdAndApartmentId;
-import com.isladellago.billmanager.exception.ConsumptionNotFoundException;
+import com.isladellago.billmanager.exception.*;
 import com.isladellago.billmanager.service.ApartmentService;
 import com.isladellago.billmanager.service.BillService;
 import org.junit.Assert;
@@ -20,6 +17,8 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 
+import java.util.Arrays;
+import java.util.List;
 import java.util.Optional;
 
 public class ConsumptionServiceImplTest {
@@ -170,5 +169,28 @@ public class ConsumptionServiceImplTest {
                 );
 
         Assert.assertNotNull(response);
+    }
+
+    @Test(expected = ConsumptionsAlreadyCalculatedException.class)
+    public final void testCalculateConsumptionsPercentageFails() {
+        Mockito.when(consumptionRepository.findByBillBillId(TestUtils.BILL_ID_1))
+                .thenReturn(Arrays.asList(new Consumption[10]));
+
+        consumptionService.calculateConsumptionsPercentage(
+                TestUtils.getCalculateConsumptionsPercentageBody_1(),
+                TestUtils.AUTH_UUID
+        );
+    }
+
+    @Test
+    public final void testGetConsumptionsByBillId() {
+        Mockito.when(consumptionRepository.findByBillBillId(TestUtils.BILL_ID_1))
+                .thenReturn(List.of(TestUtils.getConsumption_1()));
+
+        final List<Consumption> consumptions =
+                consumptionService.getConsumptionsByBillId(TestUtils.BILL_ID_1, TestUtils.AUTH_UUID);
+
+        Assert.assertNotNull(consumptions);
+        Assert.assertEquals(1, consumptions.size());
     }
 }
