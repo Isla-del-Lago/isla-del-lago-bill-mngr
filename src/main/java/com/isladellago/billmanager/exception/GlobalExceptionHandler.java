@@ -16,15 +16,15 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(InvalidBillDateRangeException.class)
     public final ResponseEntity<ErrorResponseDTO> handleInvalidBillDateRange(
             InvalidBillDateRangeException ex) {
-        log.info("Invalid dates to create a new bill, start date: {}, end date: {}, uuid: {}",
+        log.error("Invalid dates to create a new bill, start date: {}, end date: {}, uuid: {}",
                 ex.getStartDate(), ex.getEndDate(), ex.getUuid());
 
         return mapErrorResponse(ErrorCodeEnum.L300, HttpStatus.CONFLICT);
     }
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
-    public final ResponseEntity<ErrorResponseDTO> handleInvalidArgument() {
-        log.info(ErrorCodeEnum.L002.getErrorMessage());
+    public final ResponseEntity<ErrorResponseDTO> handleInvalidArgument(MethodArgumentNotValidException ex) {
+        log.error(ex.getMessage());
 
         return mapErrorResponse(ErrorCodeEnum.L002, HttpStatus.BAD_REQUEST);
     }
@@ -32,7 +32,7 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(BillExistsWithDateRangeException.class)
     public final ResponseEntity<ErrorResponseDTO> handleBillExistsWithDateRange(
             BillExistsWithDateRangeException ex) {
-        log.info("There is a bill with the start date: {} or end date: {}, uuid: {}",
+        log.error("There is a bill with the start date: {} or end date: {}, uuid: {}",
                 ex.getStartDate(), ex.getEndDate(), ex.getUuid());
 
         return mapErrorResponse(ErrorCodeEnum.L301, HttpStatus.CONFLICT);
