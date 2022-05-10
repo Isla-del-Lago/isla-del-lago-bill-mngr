@@ -12,7 +12,7 @@ import lombok.AllArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -29,8 +29,8 @@ public class BillServiceImpl implements BillService {
         log.info("[Create bill service] uuid: {}, body dto: {}",
                 uuid, createBillBodyDTO);
 
-        final LocalDateTime startDate = createBillBodyDTO.getStartDate();
-        final LocalDateTime endDate = createBillBodyDTO.getEndDate();
+        final LocalDate startDate = createBillBodyDTO.getStartDate();
+        final LocalDate endDate = createBillBodyDTO.getEndDate();
 
         if (startDate.isAfter(endDate) || startDate.isEqual(endDate)) {
             throw new InvalidBillDateRangeException(startDate, endDate, uuid);
@@ -99,6 +99,25 @@ public class BillServiceImpl implements BillService {
         }
 
         return Optional.of(previousBills.get(0));
+    }
+
+    @Override
+    public Bill getBillByStartAndEndDate(
+            LocalDate startDate, LocalDate endDate, UUID uuid) {
+
+        log.info("[Get bill by start and end date service] Start date: {}, end date: {}, uuid: {}",
+                startDate, endDate, uuid);
+
+        return billRepository.findByStartDateAndEndDate(startDate, endDate)
+                .orElseThrow(() -> new BillNotFoundException(startDate, endDate));
+    }
+
+    @Override
+    public void deleteBillById(Integer billId, UUID uuid) {
+        log.info("[Delete bill by id service] Bill id: {}, uuid: {}",
+                billId, uuid);
+
+        billRepository.deleteById(billId);
     }
 
     /**

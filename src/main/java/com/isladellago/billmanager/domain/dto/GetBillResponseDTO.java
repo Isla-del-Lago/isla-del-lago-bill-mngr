@@ -5,7 +5,7 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 
 @Builder
 @Getter
@@ -14,8 +14,8 @@ import java.time.LocalDateTime;
 public class GetBillResponseDTO {
 
     private Integer billId;
-    private LocalDateTime startDate;
-    private LocalDateTime endDate;
+    private LocalDate startDate;
+    private LocalDate endDate;
     private Integer residentialBasicCubicMeters;
     private Integer residentialBasicSuperiorCubicMeters;
     private Integer discounts;

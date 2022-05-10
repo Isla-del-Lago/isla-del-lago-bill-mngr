@@ -41,7 +41,12 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(BillNotFoundException.class)
     public final ResponseEntity<ErrorResponseDTO> handleBillNotFound(
             BillNotFoundException ex) {
-        log.error("Bill with id: {} not found", ex.getBillId());
+        if (ex.getBillId() != null) {
+            log.error("Bill with id: {} not found", ex.getBillId());
+        } else {
+            log.error("Bill with startDate: {} and endDate: {} not found",
+                    ex.getStartDate(), ex.getEndDate());
+        }
 
         return mapErrorResponse(ErrorCodeEnum.L302, HttpStatus.NOT_FOUND);
     }

@@ -4,6 +4,7 @@ import com.isladellago.billmanager.domain.dto.CreateBillBodyDTO;
 import com.isladellago.billmanager.domain.dto.GetBillResponseDTO;
 import com.isladellago.billmanager.domain.model.Bill;
 
+import java.time.LocalDate;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -50,4 +51,22 @@ public interface BillService {
      * @return Previous bill if exists.
      */
     Optional<Bill> getPreviousBill(Bill bill);
+
+    /**
+     * Get a bill by the given dates.
+     *
+     * @param startDate Bill start date.
+     * @param endDate   Bill end date.
+     * @param uuid      Execution uuid.
+     * @return The bill with the given criteria.
+     */
+    Bill getBillByStartAndEndDate(LocalDate startDate, LocalDate endDate, UUID uuid);
+
+    /**
+     * Delete a bill by the given id.
+     *
+     * @param billId Id to delete the bill.
+     * @param uuid   Execution uuid.
+     */
+    void deleteBillById(Integer billId, UUID uuid);
 }
