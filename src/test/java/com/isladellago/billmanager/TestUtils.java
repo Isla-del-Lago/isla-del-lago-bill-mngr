@@ -5,7 +5,7 @@ import com.isladellago.billmanager.domain.model.Apartment;
 import com.isladellago.billmanager.domain.model.Bill;
 import com.isladellago.billmanager.domain.model.Consumption;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.UUID;
 
@@ -15,12 +15,12 @@ public final class TestUtils {
     public static final UUID AUTH_UUID = UUID.randomUUID();
 
     public static final Integer BILL_ID_1 = 1;
-    public static final LocalDateTime START_DATE_1 = LocalDateTime.parse("2018-10-03T10:00:00");
-    public static final LocalDateTime END_DATE_1 = LocalDateTime.parse("2018-12-03T10:00:00");
-    public static final LocalDateTime START_DATE_2 = LocalDateTime.parse("2019-10-03T10:00:00");
-    public static final LocalDateTime END_DATE_2 = LocalDateTime.parse("2018-12-03T10:00:00");
-    public static final LocalDateTime START_DATE_3 = LocalDateTime.parse("2019-12-03T10:00:00");
-    public static final LocalDateTime END_DATE_3 = LocalDateTime.parse("2019-12-03T10:00:00");
+    public static final LocalDate START_DATE_1 = LocalDate.parse("2018-10-03");
+    public static final LocalDate END_DATE_1 = LocalDate.parse("2018-12-03");
+    public static final LocalDate START_DATE_2 = LocalDate.parse("2019-10-03");
+    public static final LocalDate END_DATE_2 = LocalDate.parse("2018-12-03");
+    public static final LocalDate START_DATE_3 = LocalDate.parse("2019-12-03");
+    public static final LocalDate END_DATE_3 = LocalDate.parse("2019-12-03");
     private static final Integer RESIDENTIAL_BASIC_CUBIC_METERS = 10;
     private static final Integer RESIDENTIAL_BASIC_SUPERIOR_CUBIC_METERS = 20;
     private static final Integer DISCOUNTS = 12020;

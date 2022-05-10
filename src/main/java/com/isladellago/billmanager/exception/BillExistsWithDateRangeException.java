@@ -4,7 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 import java.util.UUID;
 
 @AllArgsConstructor
@@ -12,7 +12,7 @@ import java.util.UUID;
 @Builder
 public final class BillExistsWithDateRangeException extends RuntimeException {
 
-    private final LocalDateTime startDate;
-    private final LocalDateTime endDate;
+    private final LocalDate startDate;
+    private final LocalDate endDate;
     private final UUID uuid;
 }
