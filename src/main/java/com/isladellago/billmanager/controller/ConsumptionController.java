@@ -13,7 +13,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
+import java.util.List;
 import java.util.UUID;
 
 @RestController
@@ -95,5 +97,19 @@ public class ConsumptionController {
         return ResponseEntity
                 .status(HttpStatus.OK)
                 .body(consumptionDetail);
+    }
+
+    @GetMapping(PathUtils.GET_ALL_CONSUMPTION_DETAILS_FROM_BILL_ID)
+    public ResponseEntity<List<ConsumptionDetail>> getAllConsumptionDetailsFromBill(
+            @RequestHeader(CustomHttpHeaders.UUID_HEADER) UUID uuid,
+            @RequestHeader(HttpHeaders.AUTHORIZATION) String authToken,
+            @NotNull @NotBlank @PathVariable("bill-id") Integer billId) {
+        log.info("[Get all consumptions from bill id controller] Bill id: {}, uuid: {}, authToken: {}",
+                billId, uuid, authToken);
+
+        return ResponseEntity
+                .ok()
+                .body(consumptionService.getAllConsumptionDetailsFromBillId(billId, uuid));
+
     }
 }
