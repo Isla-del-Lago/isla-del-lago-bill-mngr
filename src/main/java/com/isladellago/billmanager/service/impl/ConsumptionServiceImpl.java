@@ -5,10 +5,7 @@ import com.isladellago.billmanager.domain.model.Apartment;
 import com.isladellago.billmanager.domain.model.Bill;
 import com.isladellago.billmanager.domain.model.Consumption;
 import com.isladellago.billmanager.domain.model.ConsumptionRepository;
-import com.isladellago.billmanager.exception.ConsumptionExistsWithBillIdAndApartmentId;
-import com.isladellago.billmanager.exception.ConsumptionNotFoundByBillIdAndApartmentId;
-import com.isladellago.billmanager.exception.ConsumptionNotFoundException;
-import com.isladellago.billmanager.exception.ConsumptionsAlreadyCalculatedException;
+import com.isladellago.billmanager.exception.*;
 import com.isladellago.billmanager.service.ApartmentService;
 import com.isladellago.billmanager.service.BillService;
 import com.isladellago.billmanager.service.ConsumptionService;
@@ -104,6 +101,47 @@ public class ConsumptionServiceImpl implements ConsumptionService {
                 findConsumptionByApartmentIdAndBillId(apartmentId, billId);
         final Bill bill = billService.getBillById(billId, uuid);
 
+        return mapConsumptionDetailFromConsumption(consumption, bill);
+    }
+
+    @Override
+    public List<Consumption> getConsumptionsByBillId(Integer billId, UUID uuid) {
+        log.info("[Get consumptions by bill id service] Bill id: {}, uuid: {}",
+                billId, uuid);
+
+        return consumptionRepository.findByBillBillId(billId);
+    }
+
+    @Override
+    public List<ConsumptionDetail> getAllConsumptionDetailsFromBillId(Integer billId, UUID uuid) {
+        log.info("[Get all consumption details from bill id service] Bill id: {}, uuid: {}",
+                billId, uuid);
+
+        final Bill bill = billService.getBillById(billId, uuid);
+
+        List<Consumption> consumptionDetails = consumptionRepository.findAllByBillBillId(billId);
+
+        if (consumptionDetails.size() == 0) {
+            throw new ConsumptionDetailsNotFoundByBillId(billId);
+        }
+
+        log.info("[Get all consumption details from bill id service] Consumptions: {}, billId: {}",
+                consumptionDetails, billId);
+
+        return consumptionDetails.stream()
+                .map(consumption -> mapConsumptionDetailFromConsumption(consumption, bill))
+                .collect(Collectors.toList());
+    }
+
+    /**
+     * Maps a consumption entity to a consumption detail from the bill
+     * values.
+     *
+     * @param consumption Consumption to be calculated.
+     * @param bill        Bill values.
+     * @return Mapped consumption detail.
+     */
+    private ConsumptionDetail mapConsumptionDetailFromConsumption(Consumption consumption, Bill bill) {
         final Double residentialBasicCubicMeters =
                 consumption.getResidentialBasicCubicMeters();
         final Double residentialBasicSuperiorCubicMeters =
@@ -125,14 +163,6 @@ public class ConsumptionServiceImpl implements ConsumptionService {
                 )
                 .cleaning((double) bill.getCleaning() / 10)
                 .build();
-    }
-
-    @Override
-    public List<Consumption> getConsumptionsByBillId(Integer billId, UUID uuid) {
-        log.info("[Get consumptions by bill id service] Bill id: {}, uuid: {}",
-                billId, uuid);
-
-        return consumptionRepository.findByBillBillId(billId);
     }
 
     /**

@@ -21,4 +21,6 @@ public interface ConsumptionRepository extends JpaRepository<Consumption, Intege
     Optional<Consumption> findByBillBillIdAndApartmentApartmentId(Integer previousBillId, String apartmentId);
 
     List<Consumption> findByBillBillId(Integer billId);
+
+    List<Consumption> findAllByBillBillId(Integer billId);
 }

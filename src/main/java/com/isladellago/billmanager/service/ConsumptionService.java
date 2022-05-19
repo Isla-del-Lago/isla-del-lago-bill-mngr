@@ -65,4 +65,13 @@ public interface ConsumptionService {
      * @return List with the consumptions.
      */
     List<Consumption> getConsumptionsByBillId(Integer billId, UUID uuid);
+
+    /**
+     * Get all created consumption details related to a bill id.
+     *
+     * @param billId Bill id.
+     * @param uuid   Execution uuid.
+     * @return List with the bills.
+     */
+    List<ConsumptionDetail> getAllConsumptionDetailsFromBillId(Integer billId, UUID uuid);
 }
