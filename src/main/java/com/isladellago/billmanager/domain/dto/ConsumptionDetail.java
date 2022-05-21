@@ -8,13 +8,13 @@ import lombok.Data;
 public final class ConsumptionDetail {
 
     private final Double residentialBasicCubicMeters;
-    private Double residentialBasicSuperiorCubicMeters;
-    private Double discounts;
-    private Double residentialFixedAqueduct;
-    private Double residentialBasicAqueduct;
-    private Double residentialBasicSuperiorAqueduct;
-    private Double residentialFixedSewerage;
-    private Double residentialBasicSewerage;
-    private Double residentialBasicSuperiorSewerage;
-    private Double cleaning;
+    private final Double residentialBasicSuperiorCubicMeters;
+    private final Double discounts;
+    private final Double residentialFixedAqueduct;
+    private final Double residentialBasicAqueduct;
+    private final Double residentialBasicSuperiorAqueduct;
+    private final Double residentialFixedSewerage;
+    private final Double residentialBasicSewerage;
+    private final Double residentialBasicSuperiorSewerage;
+    private final Double cleaning;
 }

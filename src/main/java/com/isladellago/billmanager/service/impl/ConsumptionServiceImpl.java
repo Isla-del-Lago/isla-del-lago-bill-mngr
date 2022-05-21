@@ -113,7 +113,7 @@ public class ConsumptionServiceImpl implements ConsumptionService {
     }
 
     @Override
-    public List<ConsumptionDetail> getAllConsumptionDetailsFromBillId(Integer billId, UUID uuid) {
+    public Map<String, ConsumptionDetail> getAllConsumptionDetailsFromBillId(Integer billId, UUID uuid) {
         log.info("[Get all consumption details from bill id service] Bill id: {}, uuid: {}",
                 billId, uuid);
 
@@ -128,9 +128,15 @@ public class ConsumptionServiceImpl implements ConsumptionService {
         log.info("[Get all consumption details from bill id service] Consumptions: {}, billId: {}",
                 consumptionDetails, billId);
 
-        return consumptionDetails.stream()
-                .map(consumption -> mapConsumptionDetailFromConsumption(consumption, bill))
-                .collect(Collectors.toList());
+        final HashMap<String, ConsumptionDetail> consumptionsMap = new HashMap<>();
+
+        consumptionDetails
+                .forEach(consumption -> consumptionsMap.put(
+                        consumption.getApartment().getApartmentId(),
+                        mapConsumptionDetailFromConsumption(consumption, bill)
+                ));
+
+        return consumptionsMap;
     }
 
     /**

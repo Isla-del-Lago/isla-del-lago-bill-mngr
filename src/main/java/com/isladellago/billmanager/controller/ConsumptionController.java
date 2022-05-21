@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 @RestController
@@ -100,7 +101,7 @@ public class ConsumptionController {
     }
 
     @GetMapping(PathUtils.GET_ALL_CONSUMPTION_DETAILS_FROM_BILL_ID)
-    public ResponseEntity<List<ConsumptionDetail>> getAllConsumptionDetailsFromBill(
+    public ResponseEntity<Map<String, ConsumptionDetail>> getAllConsumptionDetailsFromBill(
             @RequestHeader(CustomHttpHeaders.UUID_HEADER) UUID uuid,
             @RequestHeader(HttpHeaders.AUTHORIZATION) String authToken,
             @NotNull @NotBlank @PathVariable("bill-id") Integer billId) {

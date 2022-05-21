@@ -4,6 +4,7 @@ import com.isladellago.billmanager.domain.dto.*;
 import com.isladellago.billmanager.domain.model.Consumption;
 
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 public interface ConsumptionService {
@@ -71,7 +72,7 @@ public interface ConsumptionService {
      *
      * @param billId Bill id.
      * @param uuid   Execution uuid.
-     * @return List with the bills.
+     * @return Map with the bills.
      */
-    List<ConsumptionDetail> getAllConsumptionDetailsFromBillId(Integer billId, UUID uuid);
+    Map<String, ConsumptionDetail> getAllConsumptionDetailsFromBillId(Integer billId, UUID uuid);
 }
