@@ -65,4 +65,5 @@ public final class Bill {
     @JsonBackReference
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "bill")
     private List<Consumption> consumptions;
+
 }

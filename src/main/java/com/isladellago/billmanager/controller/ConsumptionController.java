@@ -15,7 +15,6 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
-import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
@@ -112,5 +111,19 @@ public class ConsumptionController {
                 .ok()
                 .body(consumptionService.getAllConsumptionDetailsFromBillId(billId, uuid));
 
+    }
+
+    @DeleteMapping(PathUtils.BILL_ID)
+    public ResponseEntity<Void> deleteAllConsumptionsByBillId(
+            @RequestHeader(CustomHttpHeaders.UUID_HEADER) UUID uuid,
+            @RequestHeader(HttpHeaders.AUTHORIZATION) String authToken,
+            @NotNull @NotBlank @PathVariable("bill-id") Integer billId) {
+        log.info("[Delete all consumptions by id controller] Bill id: {}, uuid: {}",
+                billId, uuid);
+
+        consumptionService.deleteConsumptionsByBillId(billId, uuid);
+
+        return ResponseEntity.accepted()
+                .build();
     }
 }

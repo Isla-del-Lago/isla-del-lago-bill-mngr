@@ -4,6 +4,7 @@ import com.isladellago.billmanager.domain.dto.CreateBillBodyDTO;
 import com.isladellago.billmanager.domain.dto.GetBillResponseDTO;
 import com.isladellago.billmanager.domain.model.Bill;
 import com.isladellago.billmanager.domain.model.BillRepository;
+import com.isladellago.billmanager.domain.model.ConsumptionRepository;
 import com.isladellago.billmanager.exception.BillExistsWithDateRangeException;
 import com.isladellago.billmanager.exception.BillNotFoundException;
 import com.isladellago.billmanager.exception.InvalidBillDateRangeException;
@@ -23,6 +24,7 @@ import java.util.UUID;
 public class BillServiceImpl implements BillService {
 
     private final BillRepository billRepository;
+    private final ConsumptionRepository consumptionRepository;
 
     @Override
     public int createBill(UUID uuid, CreateBillBodyDTO createBillBodyDTO) {
@@ -118,6 +120,7 @@ public class BillServiceImpl implements BillService {
                 billId, uuid);
 
         billRepository.deleteById(billId);
+        consumptionRepository.deleteAllByBillBillId(billId);
     }
 
     /**

@@ -84,6 +84,14 @@ public class GlobalExceptionHandler {
         return mapErrorResponse(ErrorCodeEnum.L402, HttpStatus.CONFLICT);
     }
 
+    @ExceptionHandler(ConsumptionDetailsNotFoundByBillId.class)
+    public final ResponseEntity<ErrorResponseDTO> handleConsumptionDetailsNotFoundByBillId(
+            ConsumptionDetailsNotFoundByBillId ex) {
+        log.error("Consumptions not calculated for bill id: {}", ex.getBillId());
+
+        return mapErrorResponse(ErrorCodeEnum.L403, HttpStatus.NOT_FOUND);
+    }
+
     /**
      * Maps the error response when handle an exception.
      *
