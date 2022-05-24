@@ -139,6 +139,13 @@ public class ConsumptionServiceImpl implements ConsumptionService {
         return consumptionsMap;
     }
 
+    @Override
+    public void deleteConsumptionsByBillId(Integer billId, UUID uuid) {
+        log.info("[Delete consumptions by bill id] Bill id: {}, uuid: {}", billId, uuid);
+
+        consumptionRepository.deleteAllByBillBillId(billId);
+    }
+
     /**
      * Maps a consumption entity to a consumption detail from the bill
      * values.
@@ -153,7 +160,7 @@ public class ConsumptionServiceImpl implements ConsumptionService {
         final Double residentialBasicSuperiorCubicMeters =
                 consumption.getResidentialBasicSuperiorCubicMeters();
 
-        return ConsumptionDetail.builder()
+        final ConsumptionDetail consumptionDetail = ConsumptionDetail.builder()
                 .residentialBasicCubicMeters(residentialBasicCubicMeters)
                 .residentialBasicSuperiorCubicMeters(residentialBasicSuperiorCubicMeters)
                 .discounts((double) bill.getDiscounts() / 10)
@@ -169,6 +176,10 @@ public class ConsumptionServiceImpl implements ConsumptionService {
                 )
                 .cleaning((double) bill.getCleaning() / 10)
                 .build();
+
+        consumptionDetail.calculateTotal();
+
+        return consumptionDetail;
     }
 
     /**

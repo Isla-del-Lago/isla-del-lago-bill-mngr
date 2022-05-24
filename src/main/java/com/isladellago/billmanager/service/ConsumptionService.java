@@ -75,4 +75,12 @@ public interface ConsumptionService {
      * @return Map with the bills.
      */
     Map<String, ConsumptionDetail> getAllConsumptionDetailsFromBillId(Integer billId, UUID uuid);
+
+    /**
+     * Deletes all consumptions that belong to a bill.
+     *
+     * @param billId Bill id that has consumptions.
+     * @param uuid   Execution uuid.
+     */
+    void deleteConsumptionsByBillId(Integer billId, UUID uuid);
 }

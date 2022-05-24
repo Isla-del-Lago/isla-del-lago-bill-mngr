@@ -14,7 +14,8 @@ public enum ErrorCodeEnum {
     L200("L-200", "Apartment not found"),
     L400("L-400", "Consumption not found"),
     L401("L-401", "Consumption with bill id and apartment id already exists"),
-    L402("L-402", "Consumptions already calculated for this bill");
+    L402("L-402", "Consumptions already calculated for this bill"),
+    L403("L-403", "Consumptions are not calculated for the given bill");
 
     private final String errorCode;
     private final String errorMessage;

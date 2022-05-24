@@ -28,7 +28,7 @@ public final class Consumption {
 
     @ToString.Exclude
     @JsonManagedReference
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "bill_id", nullable = false)
     private Bill bill;
 

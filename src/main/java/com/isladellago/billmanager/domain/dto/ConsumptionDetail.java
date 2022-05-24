@@ -17,4 +17,11 @@ public final class ConsumptionDetail {
     private final Double residentialBasicSewerage;
     private final Double residentialBasicSuperiorSewerage;
     private final Double cleaning;
+    private Double total;
+
+    public void calculateTotal() {
+        total = residentialFixedAqueduct + residentialBasicAqueduct + residentialBasicSuperiorAqueduct +
+                residentialFixedSewerage + residentialBasicSewerage + residentialBasicSuperiorSewerage +
+                cleaning - discounts;
+    }
 }
