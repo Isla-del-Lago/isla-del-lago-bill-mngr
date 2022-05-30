@@ -92,6 +92,15 @@ public class GlobalExceptionHandler {
         return mapErrorResponse(ErrorCodeEnum.L403, HttpStatus.NOT_FOUND);
     }
 
+    @ExceptionHandler(ConsumptionNotFoundByBillIdAndApartmentId.class)
+    public final ResponseEntity<ErrorResponseDTO> handleConsumptionNotFoundByBillAndApartment(
+            ConsumptionNotFoundByBillIdAndApartmentId ex) {
+        log.error("Consumption detail not found by apartment id: {} and bill id: {}",
+                ex.getApartmentId(), ex.getBillId());
+
+        return mapErrorResponse(ErrorCodeEnum.L400, HttpStatus.NOT_FOUND);
+    }
+
     /**
      * Maps the error response when handle an exception.
      *
