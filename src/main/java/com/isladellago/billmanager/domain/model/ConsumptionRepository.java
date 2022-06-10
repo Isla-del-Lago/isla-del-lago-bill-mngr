@@ -27,4 +27,6 @@ public interface ConsumptionRepository extends JpaRepository<Consumption, Intege
 
     @Transactional
     void deleteAllByBillBillId(Integer billId);
+
+    List<Consumption> findAllByApartmentApartmentId(String apartmentId);
 }

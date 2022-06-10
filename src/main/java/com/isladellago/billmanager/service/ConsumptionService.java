@@ -83,4 +83,14 @@ public interface ConsumptionService {
      * @param uuid   Execution uuid.
      */
     void deleteConsumptionsByBillId(Integer billId, UUID uuid);
+
+    /**
+     * Get consumed cubic meters and total amount from all
+     * consumption details from apartment id.
+     *
+     * @param apartmentId Apartment id to get details
+     * @param uuid        Execution uuid.
+     * @return List details
+     */
+    Map<String, ConsumptionDetail> getAllConsumptionDetailsFromApartmentId(String apartmentId, UUID uuid);
 }

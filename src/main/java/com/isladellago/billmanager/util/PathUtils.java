@@ -14,6 +14,7 @@ public final class PathUtils {
     public static final String GET_CONSUMPTION_DETAILS_BY_APARTMENT_AND_BILL = "/consumptionDetail/apartmentId/{apartment-id}/billId/{bill-id}";
     public static final String GET_BILL_BY_START_AND_END_DATE = "/billDate";
     public static final String GET_ALL_CONSUMPTION_DETAILS_FROM_BILL_ID = "/consumptionDetail/billId/{bill-id}";
+    public static final String GET_ALL_CONSUMPTION_DETAILS_FROM_APARTMENT_ID = "/consumptionDetail/apartmentId/{apartment-id}";
 
     private PathUtils() {
         throw new AssertionError();

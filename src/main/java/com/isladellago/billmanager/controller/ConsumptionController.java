@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
+import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
@@ -125,5 +126,18 @@ public class ConsumptionController {
 
         return ResponseEntity.accepted()
                 .build();
+    }
+
+    @GetMapping(PathUtils.GET_ALL_CONSUMPTION_DETAILS_FROM_APARTMENT_ID)
+    public ResponseEntity<Map<String, ConsumptionDetail>> getAllConsumptionDetailsFromApartmentId(
+            @RequestHeader(CustomHttpHeaders.UUID_HEADER) UUID uuid,
+            @RequestHeader(HttpHeaders.AUTHORIZATION) String authToken,
+            @NotNull @NotBlank @PathVariable("apartment-id") String apartmentId) {
+        log.info("[Get all consumption detail from apartment id controller] Apartment id: {}, uuid: {}",
+                apartmentId, uuid);
+
+        return ResponseEntity
+                .ok()
+                .body(consumptionService.getAllConsumptionDetailsFromApartmentId(apartmentId, uuid));
     }
 }

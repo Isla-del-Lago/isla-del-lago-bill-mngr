@@ -146,6 +146,28 @@ public class ConsumptionServiceImpl implements ConsumptionService {
         consumptionRepository.deleteAllByBillBillId(billId);
     }
 
+    @Override
+    public Map<String, ConsumptionDetail> getAllConsumptionDetailsFromApartmentId(String apartmentId, UUID uuid) {
+        log.info("[Get all consumption details from apartment id service] Apartment id: {}, uuid: {}",
+                apartmentId, uuid);
+
+        final List<Consumption> consumptions =
+                consumptionRepository.findAllByApartmentApartmentId(apartmentId);
+
+        final Map<String, ConsumptionDetail> consumptionDetailMap = new HashMap<>();
+
+        consumptions.forEach(consumption -> {
+            final Bill bill = billService.getBillById(consumption.getBill().getBillId(), uuid);
+            final ConsumptionDetail consumptionDetail = mapConsumptionDetailFromConsumption(consumption, bill);
+
+            final String billKey = String.format("%s", bill.getStartDate());
+
+            consumptionDetailMap.put(billKey, consumptionDetail);
+        });
+
+        return consumptionDetailMap;
+    }
+
     /**
      * Maps a consumption entity to a consumption detail from the bill
      * values.
