@@ -10,4 +10,13 @@ import lombok.Getter;
 public final class ConsumptionNotFoundException extends RuntimeException {
 
     private Integer consumptionId;
+    private String apartmentId;
+
+    public ConsumptionNotFoundException(Integer consumptionId) {
+        this.consumptionId = consumptionId;
+    }
+
+    public ConsumptionNotFoundException(String apartmentId) {
+        this.apartmentId = apartmentId;
+    }
 }

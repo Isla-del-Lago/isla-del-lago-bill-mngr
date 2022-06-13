@@ -154,6 +154,10 @@ public class ConsumptionServiceImpl implements ConsumptionService {
         final List<Consumption> consumptions =
                 consumptionRepository.findAllByApartmentApartmentId(apartmentId);
 
+        if (consumptions.size() == 0) {
+            throw new ConsumptionNotFoundException(apartmentId);
+        }
+
         final Map<String, ConsumptionDetail> consumptionDetailMap = new HashMap<>();
 
         consumptions.forEach(consumption -> {
