@@ -19,4 +19,13 @@ public final class PathUtils {
     private PathUtils() {
         throw new AssertionError();
     }
+
+    public static final class UserManagerClient {
+
+        public static final String JWT_TOKEN_PATH_PARAM = "jwt-token";
+
+        public static final String ROOT_PATH = "/api/v1/user";
+
+        public static final String VALIDATE_JWT_PATH = ROOT_PATH + "/validate/{" + JWT_TOKEN_PATH_PARAM + "}";
+    }
 }
