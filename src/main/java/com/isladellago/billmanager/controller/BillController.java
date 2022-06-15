@@ -24,9 +24,9 @@ import java.util.UUID;
 
 @RestController
 @RequestMapping(PathUtils.BASE_PATH_BILL)
-@CrossOrigin("*") //NOSONAR
 @AllArgsConstructor
 @Log4j2
+@CrossOrigin("http://localhost:3000/*")
 public class BillController {
 
     private final BillService billService;
