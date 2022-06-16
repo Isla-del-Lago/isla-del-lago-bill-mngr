@@ -23,5 +23,7 @@ public final class ConsumptionDetail {
         total = residentialFixedAqueduct + residentialBasicAqueduct + residentialBasicSuperiorAqueduct +
                 residentialFixedSewerage + residentialBasicSewerage + residentialBasicSuperiorSewerage +
                 cleaning - discounts;
+
+        if (total < 0) total = 0d;
     }
 }
