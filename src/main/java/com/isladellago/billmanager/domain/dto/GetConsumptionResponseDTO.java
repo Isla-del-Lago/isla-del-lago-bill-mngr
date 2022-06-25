@@ -1,13 +1,11 @@
 package com.isladellago.billmanager.domain.dto;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 @AllArgsConstructor
 @Builder
 @Getter
+@NoArgsConstructor
 @Setter
 public final class GetConsumptionResponseDTO {
 

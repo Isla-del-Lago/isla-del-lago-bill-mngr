@@ -13,25 +13,26 @@ import javax.validation.constraints.Positive;
 @Getter
 @Setter
 @ToString
+@NoArgsConstructor
 public final class CreateConsumptionBodyDTO {
 
     @NotNull
     @Pattern(regexp = ConstantUtils.APARTMENT_REGEX)
-    private final String apartmentId;
+    private String apartmentId;
 
     @NotNull
     @Positive
-    private final Integer billId;
+    private Integer billId;
 
     @NotNull
     @DecimalMin(value = ConstantUtils.MIN_CONSUMPTION_VALUE, inclusive = false)
-    private final Double value;
+    private Double value;
 
     @NotNull
     @DecimalMin(value = ConstantUtils.MIN_CONSUMPTION_VALUE, inclusive = false)
-    private final Double residentialBasicCubicMeters;
+    private Double residentialBasicCubicMeters;
 
     @NotNull
     @DecimalMin(value = ConstantUtils.MIN_CONSUMPTION_VALUE, inclusive = false)
-    private final Double residentialBasicSuperiorCubicMeters;
+    private Double residentialBasicSuperiorCubicMeters;
 }

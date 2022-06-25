@@ -1,12 +1,16 @@
 package com.isladellago.billmanager.domain.dto;
 
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Builder
 @Data
+@NoArgsConstructor
+@AllArgsConstructor
 public final class ErrorResponseDTO {
 
-    private final String error;
-    private final String errorCode;
+    private String error;
+    private String errorCode;
 }

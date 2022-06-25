@@ -1,14 +1,13 @@
 package com.isladellago.billmanager.domain.dto;
 
-import lombok.Builder;
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.*;
 
 @Builder
 @Getter
 @Setter
 @ToString
+@AllArgsConstructor
+@NoArgsConstructor
 public final class CreateBillResponseDTO {
 
     private int billId;
