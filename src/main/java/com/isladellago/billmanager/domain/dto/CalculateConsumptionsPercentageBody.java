@@ -3,6 +3,7 @@ package com.isladellago.billmanager.domain.dto;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import javax.validation.Valid;
 import javax.validation.constraints.NotEmpty;
@@ -13,6 +14,7 @@ import java.util.List;
 
 @Data
 @AllArgsConstructor
+@NoArgsConstructor
 @Builder
 public final class CalculateConsumptionsPercentageBody {
 
@@ -20,11 +22,11 @@ public final class CalculateConsumptionsPercentageBody {
 
     @NotNull
     @Positive
-    private final Integer billId;
+    private Integer billId;
 
     @NotNull
     @NotEmpty
     @Size(min = APARTMENTS_SIZE, max = APARTMENTS_SIZE)
-    private final List<@Valid ConsumptionInfo> consumptions;
+    private List<@Valid ConsumptionInfo> consumptions;
 }
 
